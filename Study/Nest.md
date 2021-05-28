@@ -19,7 +19,7 @@
 
 
 ## 📚 Nest의 구조
-<div align="center" height="500" width="400">
+<div align="center" height="900" width="400">
     <img src="./img/Nest_Struct.png">
 </div>
 
