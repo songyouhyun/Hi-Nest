@@ -19,8 +19,8 @@
 
 
 ## 📚 Nest의 구조
-<div align="center" height="900" width="400">
-    <img src="./img/Nest_Struct.png">
+<div align="center">
+    <img src="./img/Nest_Struct.png" height="500" width="400">
 </div>
 
 위 사진은 Nest를 generate 시켰을 때 생성되는 파일들이다. 하나씩 살펴보도록 하자
