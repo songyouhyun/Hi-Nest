@@ -6,7 +6,7 @@
 * express 기반으로 제작되었으며, node.js에 백엔드를 구성할 수 있도록 해준다.
 <br>
 
-* 기본적으로 typescript를 지원하며, javascript로 어플리케이션을 작성하는 것도 가능하다.
+* 기본적으로 [typescript](https://github.com/songyouhyun/External-Brain/blob/master/Language/TypeScript/typescript.md)를 지원하며, javascript로 어플리케이션을 작성하는 것도 가능하다.
 <br>
 
 * 새로 추가된 문법인 `'@'`**[데코레이터](https://github.com/songyouhyun/External-Brain/blob/master/ETC/ETC.md#%EB%8D%B0%EC%BD%94%EB%A0%88%EC%9D%B4%ED%84%B0decorator%EB%9E%80)**(Decorator)를 아주아주 많이 이용한다.
