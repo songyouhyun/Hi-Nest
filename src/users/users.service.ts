@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { validate } from 'class-validator';
 import { getRepository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -8,6 +9,7 @@ import { UserRepository } from './users.repository';
 @Injectable()
 export class UsersService {
   constructor(private readonly userRepository: UserRepository) {}
+
   async create(createUserDto: CreateUserDto) {
     const { username, email, password } = createUserDto;
 
@@ -15,6 +17,7 @@ export class UsersService {
       .createQueryBuilder('user')
       .where('user.username = :username', { username });
 
+    // 첫 SQL 문
     const byUserName = await getByUserName.getOne();
       if (byUserName) {
         const error = { username: 'UserName is already exists' };
@@ -37,7 +40,7 @@ export class UsersService {
         );
       }
 
-      // const thisUser = this.userRepository.findOne({ username: username });
+      // const thisuser = await this.userRepository.findOne({ username: username });
       // const thisEmail = this.userRepository.findOne({ email: email });
 
       // create new user
@@ -46,7 +49,6 @@ export class UsersService {
       newUser.password = password;
       newUser.username = username;
 
-      var validate = require("validate.js");
       const validate_error = await validate(newUser);
       if (validate_error.length > 0) {
         const _error = { username: 'UserInput is not valid check type' };
@@ -61,6 +63,10 @@ export class UsersService {
 
   findAll() {
     return `This action returns all users`;
+  }
+
+  async findByEmail(email: string) {
+    return await this.userRepository.findOne({ email });
   }
 
   findOne(id: number) {
