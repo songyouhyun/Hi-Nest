@@ -1,4 +1,4 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 import * as argon2 from "argon2";
 
 // 이 annotation 이 있으면 nestjs가 보고 있다가 DB 스키마 적용을 위해 참고
