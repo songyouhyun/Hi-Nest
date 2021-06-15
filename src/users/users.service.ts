@@ -1,9 +1,11 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { validate } from 'class-validator';
-import { getRepository } from 'typeorm';
+import { DeleteResult } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { EmailAlreadyExistException } from './exceptions/email-already-exist-exception';
+import { UsernameAlreadyExistException } from './exceptions/username-already-exist-exception';
 import { UserRepository } from './users.repository';
 
 @Injectable()
@@ -13,32 +15,17 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     const { username, email, password } = createUserDto;
 
-    const getByUserName = getRepository(User)
-      .createQueryBuilder('user')
-      .where('user.username = :username', { username });
+    const thisUser = await this.userRepository.findOne({ username: username });
+    if (thisUser) {
+      const error = "UserName is already exist";
+      throw new UsernameAlreadyExistException(error);
+    }
 
-    // 첫 SQL 문
-    const byUserName = await getByUserName.getOne();
-      if (byUserName) {
-        const error = { username: 'UserName is already exists' };
-        throw new HttpException(
-          { message: 'Input Data validation failed', error },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
-
-    const getByEmail = getRepository(User)
-      .createQueryBuilder('user')
-      .where('user.email = :email', { email });
-
-      const byEmail = await getByEmail.getOne();
-      if (byEmail) {
-        const error = { email: 'email is already exists '};
-        throw new HttpException(
-          { message: 'Input data validation failed', error },
-          HttpStatus.BAD_REQUEST,
-        );
-      }
+    const thisEmail = await this.userRepository.findOne({ email: email });
+    if (thisEmail) {
+      const error = "Email is already exist";
+      throw new EmailAlreadyExistException(error);
+    }
 
       // const thisuser = await this.userRepository.findOne({ username: username });
       // const thisEmail = this.userRepository.findOne({ email: email });
@@ -57,7 +44,8 @@ export class UsersService {
           HttpStatus.BAD_REQUEST,
         );
       } else {
-        return await this.userRepository.save(newUser).then((v) => v.id);
+        const userId = await this.userRepository.save(newUser).then((v) => v.id);
+        return { userId: userId };
       }
   }
 
@@ -77,7 +65,7 @@ export class UsersService {
     return `This action updates a #${id} user`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(email: string): Promise<DeleteResult> {
+    return await this.userRepository.delete({ email: email });
   }
 }
