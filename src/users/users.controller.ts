@@ -34,8 +34,9 @@ export class UsersController {
     return this.usersService.update(+id, updateUserDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  // @Body annotation 은 response body 안에서 해당하는 필드를 가져와 변수에 입력해주는 기능을 합니다!!
+  @Delete()
+  remove(@Body('email') email: string) {
+    return this.usersService.remove(email);
   }
 }
